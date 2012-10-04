@@ -1,0 +1,46 @@
+{% extends "dashboard/base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}Screen Stats - {{ block.super }}{% endblock %}
+{% block body_id %}dashboard-stats{% endblock %}
+
+{% block extra_head %}
+  <script src="{% static 'js/json2.js' %}" charset="utf-8" type="text/javascript"></script>
+  <script src="{% static 'js/jquery.ui.slider.js' %}" charset="utf-8" type="text/javascript"></script>
+  <script src="{% static 'js/highcharts.js' %}" charset="utf-8" type="text/javascript"></script>
+  <script src="{% static 'js/highcharts.theme.js' %}" charset="utf-8" type="text/javascript"></script>
+  <script src="{% static 'js/clutch.page.stats.js' %}" charset="utf-8" type="text/javascript"></script>
+{% endblock %}
+
+{% block main %}
+  <div class="title">
+    <h1>Per-Screen Stats</h1>
+  </div>
+    
+  <div class="main-sec">
+        
+    <div class="alert-message blue">        
+      <p class="title">
+        <strong>Choose your screen and time range</strong> This should help you do it!
+      </p>
+      <select id="screen">
+        {% for s in screens %}
+          <option value="{{ s }}"{% if s == screen %}selected="selected"{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
+      <select id="period">
+        <option value="today" {% if period == 'today' %}selected="selected"{% endif %}>Today</option>
+        <option value="month" {% if period == 'month' %}selected="selected"{% endif %}>This Month</option>
+        <option value="months" {% if period == 'months' %}selected="selected"{% endif %}>3 Months</option>
+        <option value="alltime" {% if period == 'alltime' %}selected="selected"{% endif %}>All Time</option>
+      </select>
+    </div>
+
+    <div class="graph">
+      <h3>Views</h3>
+      <div class="stat-screen-views-graph"></div>
+    </div>
+    <div id="data-app-id" style="display: none">{{ app.id }}</div>                           
+  </div>
+{% endblock %}

@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+PROJECTDIR=$(python -c "import os; op = os.path; print op.dirname(op.dirname(op.realpath(\"${0}\")))")
+VENV=$HOME/.virtualenvs/clutch
+
+cd $PROJECTDIR
+
+if [ ! -d $HOME/.virtualenvs ]; then
+    echo "Found no virtualenvs directory, making one at $HOME/.virtualenvs"
+    mkdir $HOME/.virtualenvs  
+fi
+
+if [ ! -f $VENV/bin/activate ]; then
+    echo "Installing the virtualenv."
+    curl https://bitbucket.org/ianb/virtualenv/raw/tip/virtualenv.py > /tmp/_venv.py
+    python /tmp/_venv.py $VENV
+    $VENV/bin/easy_install pip
+    $VENV/bin/pip install -U -r requirements.txt
+fi
+
+if ! pg_ctl status -D $HOME/db > /dev/null 2>&1; then
+    echo "Starting PostgreSQL"
+    if [ ! -d $HOME/db ]; then
+        echo "PostgreSQL database directory not found, creating it now in $HOME/db"
+        initdb -D $HOME/db
+    fi
+    pg_ctl start -D $HOME/db -w -t 60 > /dev/null 2>&1
+    createuser -s clutch > /dev/null 2>&1
+    createdb -O clutch clutch > /dev/null 2>&1
+fi
+
+$VENV/bin/python manage.py syncdb -v 0
+$VENV/bin/python manage.py runserver 0.0.0.0:8000

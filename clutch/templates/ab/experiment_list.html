@@ -1,0 +1,51 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Experiments - {{ block.super }}{% endblock %}
+{% block body_id %}experiments-list{% endblock %}
+{% block body_class %}secondary dashboard{% endblock %}
+
+{% block extra_head %}
+<script language="javascript" type="text/javascript">
+  $(function() {
+    $('li.clickable').css('cursor', 'pointer')
+    .click(function() {
+      window.location = $('a', this).attr('href');
+    });
+  });
+</script>
+{% endblock %}
+
+{% block main %}
+  <div class="title">
+    <h1>Experiments for <i>{{ app.name }}</i></h1>
+  </div>
+
+  <div class="main-sec">
+    {% if experiments %}
+      
+    <ul class="app-list">
+      {% for experiment in experiments %}
+        <li class="clickable">
+          <a href="{% url ab_experiment_detail app.slug experiment.slug %}">{{ experiment.name }}</a>
+          <span class="date"><b>Short Name</b> <small>&middot;</small> {{ experiment.slug }}</span> 
+          <span class="date"><b>Type</b> <small>&middot;</small> {% if experiment.has_data %}Data-Driven{% else %}Normal{% endif %}</span>
+        </li>
+      {% endfor %}
+    </ul>
+      
+    <a href="{% url ab_experiment_create app.slug %}" class="btn gray right">Add a new experiment</a>
+
+    {% else %}
+
+      <div class="alert-message">
+        <a href="#" class="close">×</a>
+        <p>You have not yet created any experiments. To begin A/B testing using Clutch, you should</p>
+        <div class="alert-actions">
+          <a href="{% url ab_experiment_create app.slug %}" class="btn small">create your first experiment</a>
+        </div>
+      </div>
+
+    {% endif %}
+
+  </div>
+{% endblock %}

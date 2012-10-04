@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Create a New Experiment - {{ block.super }}{% endblock %}
+{% block body_id %}dashboard-create-app{% endblock %}
+{% block body_class %}secondary full{% endblock %}
+
+{% block content %}
+  <div class="edge"></div>
+    <div class="section">   
+      <div class="content">
+
+        <div class="title">
+          <h1>Create Experiment</h1>                   
+        </div>
+                
+        <div class="main-sec">
+
+          <div class="form-box">                  
+            <form method="POST">
+              {% csrf_token %}
+              <ul>
+                {{ form.as_ul }}
+              </ul>
+              <input type="submit" class="btn" value="Create Experiment" />
+            </form>
+          </div>
+                    
+          <div class="help-box">
+            <h3>Creating an experiment</h3>
+            <p>In order to get a better understanding of your users, first you
+              must create an experiment.  An experiment will let you test out a
+              user interface idea to see if it will improve your app.</p>
+            <p>Having trouble deciding between a <strong>normal</strong> test
+              and a <strong>data-driven</strong> test?  Learn more about these
+              two kinds of tests
+              <a href="http://docs.clutch.io/ab-testing.html">in our docs</a>.</p>
+          </div>    
+                                       
+        </div>
+                
+        <div class="clear"></div> 
+                        
+      </div>
+    </div>
+  </div>
+{% endblock %}

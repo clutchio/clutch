@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+if [ $# -lt 1 ]
+then
+    echo "Please provide a path to a clutch configuration file"
+    exit 65
+fi
+if [ ! -f "$1" ]
+then
+   echo "Configuration file $1 does not exist."
+   exit 66
+fi
+export CLUTCH_CONF="$1"
+shift
+
+gunicorn clutch.wsgi "$@"

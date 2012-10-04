@@ -1,0 +1,8 @@
+{% if messages %}
+<div class="alert-message blue">
+  <a href="#" class="close">×</a>
+  {% for message in messages %}
+    <p><strong>{{ message }}</strong></p>
+  {% endfor %}
+</div>
+{% endif %}

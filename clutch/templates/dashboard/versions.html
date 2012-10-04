@@ -1,0 +1,56 @@
+{% extends "dashboard/base.html" %}
+
+{% load pagination_tags %}
+
+{% block title %}App Versions - {{ block.super }}{% endblock %}
+{% block body_id %}dashboard-versions{% endblock %}
+
+{% block main %}
+  <div class="title">
+    <h1>Versions for <i>{{ app.name }}</i></h1>
+  </div>    
+    
+  <div class="main-sec">
+    {% autopaginate versions 30 %}
+    {% if versions %}
+      <ul class="app-list">
+        {% for version in versions %}
+          <li>
+            <span class="version"><b>Version</b> <small>&middot;</small> {{ version.version }}</span> 
+            <span class="date"><b>Created</b> <small>&middot;</small> {{ version.date_created.date }}</span> 
+            <a href="#" class="btn small gray right show-toggle">Edit</a>
+                   
+            <form class="bundles">
+              <table>
+                <thead>
+                  <tr> 
+                    <th>Min Bundle Version</th>
+                    <th>Max Bundle Version</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr> 
+                    <td><input type="text" class="min-bundle" name="min-bundle" value="{{ version.min_bundle }}" /></td>
+                    <td><input type="text" class="max-bundle" name="max-bundle" value="{{ version.max_bundle }}" /></td>
+                    <td><a href="#" data-action="version-bundle-save" data-version="{{ version.id }}" class="btn small action">Save</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </form>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="alert-message">
+        <a href="#" class="close">×</a>
+        <p>Looks like you haven&rsquo;t uploaded any code for this app yet, so there is no version information to show.  <strong>Please run "clutch upload" from your project's clutch directory to upload a new version.</strong></p>
+        <div class="alert-actions">
+          <a href="#" class="btn small">Add a device</a>
+        </div>
+      </div>
+    {% endif %}
+    
+    {% paginate %}
+  </div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% load staticfiles %}<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}Clutch.io - Develop faster and deploy instantly on your mobile app{% endblock %}</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="{% block description %}Clutch.io is a powerful mobile app development library, designed to help you develop faster and deploy instantly.{% endblock %}">
+
+        <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
+        <link href="{% static 'css/screen.css' %}" rel="stylesheet" media="all" />
+        <link href="{% static 'css/carousel.css' %}" rel="stylesheet" media="all" />
+        <link href="{% static 'css/tips-pops.css' %}" rel="stylesheet" media="all" />
+
+        <script src="{% static 'js/jquery-1.7.2.min.js' %}" charset="utf-8" type="text/javascript"></script>
+        <script src="{% static 'js/actions.js' %}" charset="utf-8" type="text/javascript"></script>
+        <script src="{% static 'js/bootstrap-modal.js' %}" charset="utf-8" type="text/javascript"></script>
+        <script src="{% static 'js/bootstrap-carousel.js' %}" charset="utf-8" type="text/javascript"></script>
+        <script src="{% static 'js/bootstrap-tooltip.js' %}" charset="utf-8" type="text/javascript"></script>
+        <script src="{% static 'js/bootstrap-popover.js' %}" charset="utf-8" type="text/javascript"></script>
+        <script src="{% static 'js/global.js' %}" charset="utf-8" type="text/javascript"></script>
+
+        {% block extra_head %}{% endblock %}
+    </head>
+    <body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
+    
+    {% block container %}{% endblock %}
+    
+    <div id="footer">
+           <div class="content">
+               <div class="left">
+               		<ul>
+                    <li><a href="{% url dashboard_home %}">Home</a></li>
+             	    </ul>	
+               		<br class="cl">
+                    <a href="https://twitter.com/clutchio" class="twitter-follow-button" data-show-count="false" data-show-screen-name="false">Follow @clutchio</a>
+                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+               	</div>
+
+               	<div class="right">	
+               		<p class="copyright">Copyright &copy; 2011-{% now "Y" %} Boilerplate Inc. San Francisco, CA.</p>
+               	</div>
+           </div>
+      </div>
+{% block extra_body %}{% endblock %}
+
+</body>
+</html>    
+    

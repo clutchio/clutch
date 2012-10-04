@@ -1,0 +1,139 @@
+{% extends "dashboard/base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}{{ experiment.name }} - {{ block.super }}{% endblock %}
+{% block body_class %}secondary dashboard{% endblock %}
+{% block body_id %}experiment-detail{% endblock %}
+
+{% block extra_head %}
+  <link href="{% static 'css/slider.css' %}" rel="stylesheet" media="all" />
+
+  <script src="{% static 'js/json2.js' %}" charset="utf-8" type="text/javascript"></script>
+  <script src="{% static 'js/jquery.ui.slider.js' %}" charset="utf-8" type="text/javascript"></script>
+  <script src="{% static 'js/highcharts.js' %}" charset="utf-8" type="text/javascript"></script>
+  <script src="{% static 'js/highcharts.theme.js' %}" charset="utf-8" type="text/javascript"></script>
+  
+  <script src="{% static 'js/ace/ace.js' %}" charset="utf-8" type="text/javascript"></script>
+  <script src="{% static 'js/ace/mode-json.js' %}" charset="utf-8" type="text/javascript"></script>
+  <script src="{% static 'js/ace/theme-tomorrow.js' %}" charset="utf-8" type="text/javascript"></script>
+
+  <script src="{% static 'js/abba/hash.js' %}" charset="utf-8" type="text/javascript"></script>
+  <script src="{% static 'js/abba/jstat-min-08fb5e8.js' %}" charset="utf-8" type="text/javascript"></script>
+  <script src="{% static 'js/abba/protovis-r3.2.js' %}" charset="utf-8" type="text/javascript"></script>
+  <script src="{% static 'js/abba/stats.js' %}" charset="utf-8" type="text/javascript"></script>
+  <script src="{% static 'js/abba/render.js' %}" charset="utf-8" type="text/javascript"></script>
+
+  <script src="{% static 'js/ab.js' %}" charset="utf-8" type="text/javascript"></script>
+  <script type="text/javascript">
+    window.variations = {};
+    {% for variation in variations %}
+      window.variations[{{ variation.num }}] = '{{ variation.name }}';
+    {% endfor %}
+    window.abStatUrl = '{% url ab_experiment_stats app.slug experiment.id %}';
+    window.appSlug = '{{ app.slug }}';
+    window.experimentId = {{ experiment.id }};
+    window.experimentSlug = '{{ experiment.slug }}';
+  </script>
+{% endblock %}
+
+{% block main %}
+  
+  <div class="title">
+    <h1>Experiment: <i>{{ experiment.name }}</i> <span>({{ app.name }})</span></h1>
+    <a class="btn small gray" href="{% url ab_experiment_list app.slug %}">&laquo; Experiements</a>
+  </div>
+
+  <div class="main-sec">
+    <div class="chart-holder">
+      
+    <span class="type">{% if experiment.has_data %}Data-Driven{% else %}Normal{% endif %} Test</span> 
+
+    <div class="chart-top"></div>
+
+    <div id="chart"></div>
+
+    </div>
+
+    <p id="no-data-yet" style="display: none">There is no data collected for this test yet, so we can't show a chart.  Start running some A/B tests and we will track their progress here.</p>
+
+    <div class="confidence-holder">
+      <h3 id="confidence-heading">Confidence</h3>
+      <div id="confidence"></div>
+    </div>
+
+    <div class="title-wrap">
+    <h3>Variations</h3>
+    <a href="#" class="add-variation btn small gray">+ New Variation</a>
+    <a href="{% url ab_experiment_csv app.slug experiment.id %}" class="download-csv btn small gray">Download CSV</a>
+    </div>
+
+    <div class="status {% if total_percentage > 1 %}failure{% else %}{% if total_percentage > 0.8 %}warning{% else %}success{% endif %}{% endif %}">
+      <p class="good-message">Ok you are good to go. You are currently going to show <span class="total-percentage">{{ total_percentage|percent_int }}%</span> of total visitors the varitions below. 
+      </p>
+      <p class="warning-message">You aren&rsquo;t sending very much traffic to your baseline.  This can make it difficult to tell whether your tests are improving over what you already have.</p>
+      <p class="bad-message">There is a porblem with your variations. Your current settings are too high, please reduce the variations total percentage shown to be <b>100%</b> or under. </p>
+      <span id="main-total-percentage" class="total-percentage" class="{% if total_percentage > 1 %}failure{% else %}success{% endif %}">{{ total_percentage|percent_int }}%</span>
+    </div>
+
+    <form id="main-form" method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="kind" value="save" />
+      <ul class="variations">
+        <li id="variation-baseline" class="variation">
+          <div class="top">
+            <span class="variation-name">
+              Baseline
+            </span>
+            <span class="desc">Auto adjusts depending on the settings of other variations</span>
+            <div class="slider-holder">
+              <span class="slider-data">{{ baseline_percentage|percent_int }}</span>% of users will see this variation
+              <div class="slider"></div>
+            </div>
+          </div>
+        </li>
+        {% for variation in variations %}
+          <li id="variation-{{ variation.id }}" class="variation var-num-{{ forloop.counter }}">
+
+            <div class="top">
+              <span class="variation-name">{{ variation.name }}</span>
+              <input type="text" class="variation-name-text" value="{{ variation.name }}" style="display: none" />
+              <a href="#" class="variation-name-edit btn small gray">Edit</a>
+              <a href="#" class="variation-name-save btn small gray" style="display: none">Save</a>
+              <a href="#" class="variation-remove btn small gray">Remove</a>
+
+              <div class="slider-holder">
+                <span class="slider-data">{{ variation.weight|percent_int }}</span>% of users will see this variation
+                <div class="slider"></div>
+              </div>
+            </div>
+
+            {% if experiment.has_data %}
+              <div class="editor-wrap">
+                <span class="editor-title">Edit Variation Code</span>
+                <div id="variation-data-{{ variation.id }}" class="variation-data" style="position: relative; height: 120px; width: 100%">{{ variation.data }}</div>
+                <span class="corner"></span>
+              </div>
+            {% endif %}
+
+          </li>
+        {% empty %}
+          <li>There are no variations yet.</li>
+        {% endfor %}
+      </ul>
+
+      <div class="alert-message blue" id="save-data-success" style="display: none;">
+        <p><strong>Success!</strong> Your data has now been saved.</p>
+      </div>
+
+      <a href="#" class="btn delete-exp gray">Delete Experiment</a>
+
+      <input type="submit" class="btn save-data" value="Save Data" />
+
+      <div class="clear"></div>
+
+    </form>
+
+
+  </div>
+{% endblock %}

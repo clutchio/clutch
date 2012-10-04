@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Register a New Device - {{ block.super }}{% endblock %}
+{% block body_id %}dashboard-create-device{% endblock %}
+{% block body_class %}secondary full{% endblock %}
+
+{% block content %}  
+  <div class="edge"></div>
+      
+  <div class="section">   
+    <div class="content">
+                
+      <div class="title">
+        <h1>Register Device</h1>
+      </div>    
+                
+      <div class="main-sec">
+                                         
+        <div class="form-box">
+          <form method="POST">
+            {% csrf_token %}
+            <ul>
+              {{ form.as_ul }}
+            </ul>
+            <input type="submit" class="btn" value="Add Device" />
+          </form>
+        </div>
+                     
+        <div class="help-box">
+          <h3>Register a device</h3>
+          <p>Registering a device with Clutch means you can turn on development mode and we&rsquo;ll update the code on your phone without your even needing to recompile.</p>
+
+          <p>If you&rsquo;re having trouble with the device identifier, remember to include this bit of code somewhere, and look in XCode&rsquo;s console log to see the identifier:</p>
+          <pre>[ClutchView logDeviceIdentifier];</pre>
+
+          <a href="http://docs.clutch.io/quickstart.html" target="_blank" class="btn gray">Need more help? View the Docs.</a>
+        </div>
+                                       
+      </div>
+                
+      <div class="clear"></div> 
+                        
+    </div>
+  </div>
+{% endblock %}

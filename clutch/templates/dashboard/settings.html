@@ -1,0 +1,135 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Settings - {{ block.super }}{% endblock %}
+{% block body_id %}dashboard-settings{% endblock %}
+
+{% block extra_head %}
+
+<script language="javascript" type="text/javascript">
+	// basic show and hide
+  $(document).ready(function() {
+    $('#show-toggle').click( function() {
+      $('div.add-member').toggle();
+    });
+  });
+</script>
+
+{% endblock %}
+
+
+{% block main %}
+  <div class="title">
+    <h1>App Settings for <i>{{ app.name }}</i></h1>
+  </div>    
+    
+  <div class="main-sec">
+    {% include "includes/messages.html" %}
+
+    <h3 class="first">Application Keys</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Key</th>
+          <th>Date Generated</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for app_key in app_keys %}
+          <tr>
+            <td>{{ app_key.key }}</td>
+            <td>{{ app_key.date_created.date }}</td>
+            <td>{{ app_key.status_fmt }}</td>
+            <td>
+              {% if app_key.status == 'active' %}
+                <a href="#" class="action" data-action="key-deactivate" data-app-key="{{ app_key.id }}">Deactivate</a>
+              {% else %}
+                <a href="#" class="action" data-action="key-reactivate" data-app-key="{{ app_key.id }}">Re-activate</a>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <a href="#" class="action btn gray right" data-action="key-generate" data-app="{{ app.id }}">Generate a new Application Key</a>
+        
+    <div class="clear"></div>
+        
+    <h3>Members</h3>
+        
+    <table>
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Date Added</th>
+          <th>Privileges</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for member in members %}
+          <tr>
+            <td>{{ member.user.username }}</td>
+            <td>{{ member.date_created.date }}</td>
+            <td>{% if member.is_admin %} (admin){% endif %}{% if user_membership.is_admin and member.user != request.user %} <a href="#" class="action" data-action="member-remove" data-member="{{ member.id }}">Remove Membership</a>{% endif %}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+        
+    <a href="#" class="action btn gray right" id="show-toggle">Add a Member</a>
+        
+    <div class="add-member">
+      <h3>Add a Member</h3>
+      <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="kind" value="member" />
+        <ul>
+          {{ member_form.as_ul }}
+        </ul>
+        <input type="submit" value="Add Member" class="btn green" style="margin:0 0 20px 130px" />
+      </form>
+    </div>
+
+    <br />
+
+    <div class="app-actions">
+      <h3>Application Actions</h3>
+            
+      <div class="wrap">
+        <h4>Change App Name</h4>
+        <form method="POST" class="brake">
+          {% csrf_token %}
+          <input type="hidden" name="kind" value="rename" />
+          <ul>
+            {{ rename_form.as_ul }}
+          </ul>
+          <input type="submit" value="Rename App" class="btn gray" />
+        </form>
+
+        <h4>Change App Short Name</h4>
+        <form method="POST" class="brake">
+          {% csrf_token %}
+          <input type="hidden" name="kind" value="reslug" />
+          <ul>
+            {{ reslug_form.as_ul }}
+          </ul>
+          <input type="submit" value="Change App Short Name" class="btn gray" />
+        </form>
+
+        <h4>Delete app?</h4>
+        <form method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="kind" value="delete" />
+          <div class="label">{{ delete_form.confirm }}
+            {{ delete_form.confirm.label }}</div>
+          {{ delete_form.confirm.errors }}
+          <input type="submit" value="Delete App" class="btn" />
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+{% endblock %}

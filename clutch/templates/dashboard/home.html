@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Apps - {{ block.super }}{% endblock %}
+{% block body_id %}dashboard-home{% endblock %}
+{% block body_class %}secondary dashboard{% endblock %}
+
+{% block extra_head %}
+<script language="javascript" type="text/javascript">
+    $(function() {
+        $('li.clickable').css('cursor', 'pointer')
+        .click(function() {
+            window.location = $('a', this).attr('href');
+        });
+    });
+</script>
+{% endblock %}
+
+{% block content %}    
+  <div class="edge"></div>
+      
+  <div class="section">   
+    <div class="content">
+      
+      <div class="title">
+        <h1>Your Apps</h1>
+      </div>    
+                
+      <div class="main-sec">
+                  
+        <div class="alert-message special">
+          <h2>Welcome {{ user.username }}!</h2>
+          <p>Here are the apps that you have registered to the system.  From here you should be able to access statistics, add new members, and see released versions.  Additionally you can register a new development device below.</p>
+        </div>
+
+        {% if apps %}                                       
+          <ul class="app-list">
+            {% for app in apps %}
+              <li class="clickable">
+                <a href="{{ app.get_absolute_url }}">{{ app.name }}</a>
+                <span class="date"><b>Created</b> <small>&middot;</small> {{ app.date_created|date }}</span> 
+                <span class="date"><b>Members</b> <small>&middot;</small> {{ app.member_set.count }}</span>
+                <span class="date"><b>Versions</b> <small>&middot;</small> {{ app.version_set.count }}</span>  
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <div class="alert-message">
+            <a href="#" class="close">×</a>
+            <p><strong>Why hello there,</strong> It looks like you haven&rsquo;t created any apps yet. Before you can take advantage of what Clutch has to offer, you must first create an app.</p>
+            <div class="alert-actions">
+              <a href="{% url dashboard_create_app %}" class="btn small">Create app</a>
+            </div>
+          </div>
+        {% endif %}
+                    
+        <ul class="actions">
+          <li><a href="{% url dashboard_devices %}" class="btn">Manage your devices &raquo;</a></li>
+          <li><a href="{% url dashboard_create_app %}" class="btn">Start a new app &raquo;</a></li>
+          <li style="float:right;margin:0;"><a href="http://docs.clutch.io" class="btn gray">View the Docs &raquo;</a></li> 
+        </ul>
+                                         
+      </div>
+
+      <div class="secondary-sec">
+        <h4 class="section-header">
+          Global Actions
+          <a data-content="Global actions let you manage things that aren't specific to any particular app, like your account settings or your development devices." rel="popover" class="help-pop" href="#" data-original-title="What are global actions?">?</a>
+        </h4>
+        <ul class="secondary-nav">
+          <li class="active"><a class="link" href="{% url dashboard_home %}">My Apps</a></li>
+          <li><a class="link" href="{% url accounts %}">My Account</a></li>
+          <li><a class="link" href="{% url dashboard_devices %}">Manage Devices</a></li>
+          <!--
+          <li><a href="#" rel="tooltip" title="first tooltip">test tooltip</a></li>
+          -->
+        </ul>
+        {% block callout %}{% endblock %}
+      </div>
+                
+      <div class="clear"></div> 
+
+    </div>
+  </div>
+{% endblock %}

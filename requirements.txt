@@ -1,0 +1,8 @@
+Django==1.4.1
+simplejson==2.6.1
+gunicorn==0.14.6
+django-pagination==1.0.7
+psycopg2==2.4.5
+boto==2.5.2
+pytz==2012d
+gevent==0.13.8

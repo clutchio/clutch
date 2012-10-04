@@ -1,0 +1,99 @@
+{% extends "dashboard/base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}Stats - {{ block.super }}{% endblock %}
+{% block body_id %}dashboard-stats{% endblock %}
+
+{% block extra_head %}
+  <script src="{% static 'js/json2.js' %}" charset="utf-8" type="text/javascript"></script>
+  <script src="{% static 'js/jquery.ui.slider.js' %}" charset="utf-8" type="text/javascript"></script>
+  <script src="{% static 'js/highcharts.js' %}" charset="utf-8" type="text/javascript"></script>
+  <script src="{% static 'js/highcharts.theme.js' %}" charset="utf-8" type="text/javascript"></script>
+  <script src="{% static 'js/clutch.page.stats.js' %}" charset="utf-8" type="text/javascript"></script>
+{% endblock %}
+
+{% block main %}
+  <div class="title">
+    <h1>Stats for <i>{{ app.name }}</i></h1>
+    <a class="btn small gray" href="{% url dashboard_home %}">&laquo; My Apps</a>
+  </div>
+    
+  <div class="main-sec">
+        
+    <div class="quick-stats-holder">
+      <div class="header">
+        <h3>{{ app.name }}</h3>
+                
+        <select id="period">
+          <option value="today" {% if period == 'today' %}selected="selected"{% endif %}>Today</option>
+          <option value="month" {% if period == 'month' %}selected="selected"{% endif %}>This Month</option>
+          <option value="months" {% if period == 'months' %}selected="selected"{% endif %}>3 Months</option>
+          <option value="alltime" {% if period == 'alltime' %}selected="selected"{% endif %}>All Time</option>
+        </select>
+      </div>
+            
+      <table>
+        <thead>
+          <tr>
+            <th><span>Active Users</span></th>
+            <th><span>New Users</span></th>
+            <th class="views"><span>Views</span></th>
+            <th><span>Total Users</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id="quick-stats">
+            <td>
+              <div class="stat-box stat-actives">
+                <span class="stat"></span>
+                <span class="line"></span>
+              </div>
+            </td>
+            <td>
+              <div class="stat-box stat-new-users">
+                <span class="stat"></span>
+                <span class="line"></span>
+              </div>
+            </td>
+            <td>
+              <div class="stat-box stat-views">
+                <span class="stat"></span>
+                <span class="line"></span>
+              </div>
+            </td>
+            <td class="last">
+              <div class="stat-box stat-total-users">
+                <span class="stat"></span>
+                <span class="line"></span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+            
+      <div class="clear"></div>
+        
+    </div>
+        
+    <div class="graph">
+      <div id="stat-actives-graph"></div>
+      <span></span>
+    </div>
+    <div class="graph">
+      <div id="stat-new-users-graph"></div>
+      <span></span>
+    </div>
+    <div class="graph">
+      <a href="{% url dashboard_screen_stats app.slug period %}" class="btn gray per small">Per Screen &raquo;</a>
+      <div id="stat-views-graph"></div>
+      <span></span>
+    </div>
+    <div class="graph">
+      <div id="stat-total-users-graph"></div>
+      <span></span>
+    </div>
+
+    <div id="data-app-id" style="display: none">{{ app.id }}</div>                           
+  </div>
+{% endblock %}

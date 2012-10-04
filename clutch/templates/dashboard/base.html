@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}{{ app.name }}{{ block.super }}{% endblock %}
+{% block body_class %}secondary dashboard{% endblock %}
+
+{% block content %}
+  <div class="edge"></div>
+    <div class="section">   
+      <div class="content">
+                
+        {% block main %}{% endblock %}
+                
+        <div class="secondary-sec">
+
+          <h4 class="section-header">
+            Global Actions 
+            <a data-content="Global actions let you manage things that aren't specific to any particular app, like your account settings or your development devices." rel="popover" class="help-pop" href="#" data-original-title="What are global actions?">?</a>
+          </h4>
+          <ul class="secondary-nav">
+            <li><a class="link" href="{% url dashboard_home %}">My Apps</a></li>
+            <li><a class="link" href="{% url accounts %}">My Account</a></li>
+            <li><a class="link" href="{% url dashboard_devices %}">Manage Devices</a></li>
+          </ul>
+                      
+          <h4 class="section-header">
+            A/B Testing
+            <a data-content="A/B testing is a native framework for improving your metrics by testing different variations of your app to find the best one." rel="popover" class="help-pop" href="#" data-original-title="What is A/B testing?">?</a>
+          </h4>
+          <ul class="secondary-nav">
+            {% spaceless %}
+              {% url ab_experiment_list app.slug as ab_experiment_list_url %}
+              {% url ab_experiment_detail app.slug experiment.slug as ab_experiment_detail_url %}
+              {% url ab_quickstart app.slug as ab_quickstart_url %}
+            {% endspaceless %}
+            <li class="{% if request.path == ab_quickstart_url %}active{% endif %}"><a class="link" href="{{ ab_quickstart_url }}">Quick Start</a></li>
+            <li class="{% if request.path == ab_experiment_list_url or request.path == ab_experiment_detail_url %}active{% endif %}"><a href="{{ ab_experiment_list_url }}" class="link">Experiments</a></li>
+          </ul>
+
+          <h4 class="section-header">
+            Clutch Framework
+            <a data-content="The Clutch Framework combines native code with HTML in order to speed up development and iteration on your app." rel="popover" class="help-pop" href="#" data-original-title="What is Clutch Framework?">?</a>
+          </h4>
+          <ul class="secondary-nav">
+            {% spaceless %}
+              {% url dashboard_quickstart app.slug as dashboard_quickstart_url %}
+              {% url dashboard_app app.slug as dashboard_app_url %}
+              {% url dashboard_stats app.slug as dashboard_stats_url %}
+              {% url dashboard_screen_stats app.slug as dashboard_screen_stats_url %}
+              {% url dashboard_versions app.slug as dashboard_versions_url %}
+              {% url dashboard_settings app.slug as dashboard_settings_url %}
+            {% endspaceless %}
+            
+            <li class="{% if request.path == dashboard_quickstart_url %}active{% endif %}"><a href="{{ dashboard_quickstart_url }}" class="link">Quick Start</a></li>
+            <li class="{% if dashboard_stats_url in request.path or dashboard_screen_stats_url in request.path or request.path == dashboard_app_url %}active{% endif %}"><a href="{{ dashboard_stats_url }}" class="link">Stats</a></li>
+            <li class="{% if request.path == dashboard_versions_url %}active{% endif %}"><a href="{{ dashboard_versions_url }}" class="link">Versions</a></li>
+            <li class="{% if request.path == dashboard_settings_url %}active{% endif %}"><a href="{{ dashboard_settings_url }}" class="link">App Settings</a></li>
+          </ul>
+
+          {% block callout %}{% endblock %}
+        </div>
+      
+      <div class="clear"></div> 
+    </div>
+  </div>
+{% endblock %}

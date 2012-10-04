@@ -1,0 +1,33 @@
+{% extends "marketing-base.html" %}
+
+{% block title %}Forbidden :: {{ block.super }}{% endblock %}
+{% block body_id %}Forbidden{% endblock %}
+{% block body_class %}secondary full error{% endblock %}
+
+{% block content %}
+    
+    <div class="edge"></div>
+      
+      <div class="section">   
+            <div class="content">
+                
+                <div class="title">
+                   <h1>Uh oh!</h1>
+                </div>    
+                
+                <div class="main-sec">
+                   <h2>
+                       Sorry, you don't have access to that page.
+                       
+                   </h2>
+                   
+                   <p>Sorry, you don't have access to the page that you are trying to access. <a href="/">Click here</a> to return to the homepage. </p>
+                      
+                </div>                
+            
+                <div class="clear"></div> 
+                        
+            </div>
+        </div>
+    
+{% endblock %}

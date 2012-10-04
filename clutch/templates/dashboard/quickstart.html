@@ -1,0 +1,192 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Quick Start - {{ block.super }}{% endblock %}
+{% block body_id %}dashboard-quickstart{% endblock %}
+
+{% block extra_head %}
+<script charset="utf-8" type="text/javascript">
+$(function() {
+  $('.screencast-getting-started').hide();
+  $('#screencast-getting-started-' + $('#project-type-selector :checked').val() + '-btn').show();
+
+  $('.screencast-getting-started').click(function() {
+    var eltId = '#screencast-getting-started-' + $('#project-type-selector :checked').val();
+    var elt = $(eltId);
+    elt.on('show', function() {
+      elt.html($(eltId + '-content').html());
+    }).on('hidden', function() {
+      elt.html('');
+    }).modal({
+      backdrop: true,
+      keyboard: true
+    }).css({
+      width: 'auto',
+      'margin-left': function () {
+          return -($(this).width() / 2);
+      }
+    });
+    return false;
+  });
+  });
+});
+</script>
+{% endblock %}
+
+{% block main %}
+<div class="title">
+   <h1>Quick Start for the Clutch Framework</h1>
+</div>    
+
+<div class="main-sec">
+  <div class="project-type" id="project-type-existing">
+    <h3 style="margin: 0">1. Download and Install the Clutch iOS Framework</h3>
+    <p>
+      Download the <a href="http://clutchdownloads.s3.amazonaws.com/latest/clutch-ios.zip">Clutch iOS Library</a>
+      zip file and extract it.
+      <br />
+      <br /> 
+      <strong>Now drag the Clutch.framework folder into your project:</strong>
+      <img src="{{ STATIC_URL }}images/quickstart-drag.jpg" alt="Dragging the Clutch Framework Into Your Project" />
+      <br />
+      <br />
+      <strong>Choose the option to "Copy items into destination group's folder":</strong>
+      <img src="{{ STATIC_URL }}images/quickstart-copy.jpg" alt="Choosing to copy items into destination group's folder" />
+      <br />
+      <br />
+      <strong>Since Clutch relies on sqlite, add that to your linked frameworks as well:</strong>
+      <img src="{{ STATIC_URL }}images/quickstart-sqlite.jpg" alt="Adding sqlite" />
+    </p>
+
+    <h3>2. Integrate Clutch With Your AppDelegate</h3>
+    <p>
+      In your <string>AppDelegate.h</strong> file, right underneath
+      &ldquo;#import &lt;UIKit/UIKit.h&gt;&rdquo;, import the Clutch library:
+      <pre>#import &lt;Clutch/Clutch.h&gt;</pre>
+
+      In your <strong>AppDelegate.m</strong> file, right under all the other
+      &ldquo;#import&rdquo; statements, add the following line:
+      <pre>static NSString *kClutchAppId = @"{{ app_key }}";
+static NSString *kClutchTunnelURL = @"http://127.0.0.1:41675/";
+static NSString *kClutchRpcURL = @"http://127.0.0.1:41674/";</pre>
+
+
+      In <strong>didFinishLaunchingWithOptions</strong> add the following lines:
+      <pre>// Synchronize with the Clutch servers
+[[ClutchSync sharedClientForKey:kClutchAppId tunnelURL:kClutchTunnelURL rpcURL:kClutchRpcURL] sync];
+
+// Log the device identifier
+[ClutchView logDeviceIdentifier];</pre>
+      
+      In <strong>applicationDidEnterBackground</strong> add the following line:
+      <pre>[[ClutchSync sharedClientForKey:kClutchAppId tunnelURL:kClutchTunnelURL rpcURL:kClutchRpcURL] background];</pre>
+
+      In <strong>applicationWillEnterForeground</strong> add the following line:
+      <pre>[[ClutchSync sharedClientForKey:kClutchAppId tunnelURL:kClutchTunnelURL rpcURL:kClutchRpcURL] foreground];</pre>
+    </p>
+
+    <h3>3. Create Clutch Project</h3>
+    <p>
+      Open Terminal.app and run the following command to install the
+      command-line Clutch client:
+      <pre>sudo easy_install -U clutchclient</pre>
+
+      Now change directory to your XCode project and run the following command:
+      <pre>cd path/to/your/xcode/project
+clutch startapp {{ app.slug }}</pre>
+
+      This will create a directory structure to hold your Clutch-using source
+      code.  Now drag that created directory into your XCode project, making
+      sure to uncheck the "Copy items into destination group's folder" option
+      and choosing the option to create folder references:
+      <img src="{{ STATIC_URL }}images/quickstart-folder-reference.jpg" alt="Choosing the folder reference option" />
+    </p>
+
+    <h3>4. Add Your Device</h3>
+    <p>
+      <strong>To add your device, just run your project:</strong>
+      <img src="{{ STATIC_URL }}images/xcode-run-btn.jpg" alt="XCode Run Button" />
+      <br />
+      <br />
+      <strong>Look at your logs and find where the device id is logged:</strong>
+      <img src="{{ STATIC_URL }}images/quickstart-log-device-id.jpg" alt="Logged device id" />
+      <br />
+      <br />
+      <strong>Now copy and paste the device id in the form below:</strong>
+      <div class="id-field" style="margin:0">
+      <div class="alert-message blue" id="device-added-success-2" style="display: none;">
+        <p><strong>Success!</strong> Your device is now added to the Clutch system.</p>
+      </div>
+      <label for="device-id-2">Your device id:</label>
+      <input type="text" id="device-udid-2" />
+      <a href="#" class="btn action" data-action="quickstart-add-device-2">Add Device</a>
+      </div>
+      <div class="clear"></div>
+    </p>
+    <p>
+      Adding your device id means that you can now enter development mode.
+      To enter development mode, simply cd to your clutch directory ({{ clutch_dir }})
+      and run the following command (as a reminder, your username is
+      <strong>{{ user.username }}</strong>):
+    </p>
+    <pre>clutch dev</pre>
+    <p>
+      This sets up a connection between the CSS/JavaScript/HTML files in your
+      local directory with the web view in your simulator.  Now any
+      Clutch screens are loaded directly from your computer!
+    </p>
+
+    <h3>5. Add Your First Clutch Screen</h3>
+    <p>
+      A Clutch screen is a dynamic content area (built using a web view) where
+      you can display your application code.  It's the main building block of
+      Clutch, and you can update this content area immediately and deliver it
+      to all of your users.
+    </p>
+    <p>
+      To add your first Clutch screen, please visit
+      <a href="http://docs.clutch.io/addingnewscreen.html">our guide to adding a new screen</a>
+      and follow the steps there.
+    </p>
+
+    <h3>6. Learn More</h3>
+    <p>
+      Now that your project is set up, you might want to learn about how all the
+      pieces fit together.  We have set up a page that
+      <a href="http://docs.clutch.io/anatomy.html">describes that all in detail</a>,
+      so we would love it if you checked that out.
+    </p>
+    <p>
+      To learn even more about what you can do with Clutch, head over
+      to <a href="http://docs.clutch.io/">the Clutch documentation</a> and
+      browse around.  Please be sure to
+      <a href="mailto:support@clutch.io">let us know</a> if any documentation
+      is missing or unclear.
+    </p>
+  </div>
+</div>
+{% endblock %}
+
+{% block callout %}
+<div class="callout">
+  <a class="thumb screencast-getting-started" id="screencast-getting-started-new-btn" href="#">
+    <span class="play-btn">play</span>  
+    <img class="frame" src="{{ STATIC_URL }}images/btn/video-thumb-01.jpg" />
+    <span class="label">Getting Started - New XCode Project</span>
+  </a>
+  <a class="thumb screencast-getting-started" id="screencast-getting-started-existing-btn" href="#">
+    <span class="play-btn">play</span>  
+    <img class="frame" src="{{ STATIC_URL }}images/btn/video-thumb-02.jpg" />
+    <span class="label">Getting Started - Existing XCode Project</span>
+  </a>
+</div>
+<script type="text/html" id="screencast-getting-started-new-content">
+  <iframe src="https://player.vimeo.com/video/36469397?title=0&amp;byline=0&amp;portrait=0" width="710" height="400" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+</script>
+<div class="modal fade" id="screencast-getting-started-new" style="display: none">
+</div>
+<script type="text/html" id="screencast-getting-started-existing-content">
+  <iframe src="https://player.vimeo.com/video/36468715?title=0&amp;byline=0&amp;portrait=0" width="710" height="400" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+</script>
+<div class="modal fade" id="screencast-getting-started-existing" style="display: none">
+</div>
+{% endblock %}

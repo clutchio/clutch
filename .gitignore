@@ -1,0 +1,16 @@
+*.pyc
+local_settings.py
+build/
+src/
+pip-log.txt
+*DS_Store
+*~
+.databases.json
+dump.rdb
+.vagrant
+*.log
+docs/_build/*
+clutch/media/static/CACHE*
+dist/*
+clutchserver.egg-info/*
+setuptools_git-0.4.2-py2.7.egg

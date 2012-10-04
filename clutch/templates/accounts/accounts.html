@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block title %}My Account - {{ block.super }}{% endblock %}
+{% block body_id %}accounts{% endblock %}
+{% block body_class %}secondary dashboard{% endblock %}
+
+{% block content %}
+<div class="edge"></div>
+<div class="section">
+  <div class="content">
+    <div class="title">
+      <h1>My Account</h1>
+    </div>   
+    
+    <div class="main-sec">
+      {% include "includes/messages.html" %}
+
+      <h3 style="margin:0 0 14px">My Info</h3>
+      <form method="POST" class="my-info">
+        {% csrf_token %}
+        <ul>
+          {{ account_form.as_ul }}
+        </ul>
+        <input type="submit" class="btn" value="Save Account Details" style="margin:10px 0 0 231px" />
+      </form>
+      
+      <h3>Current Active Users This Month</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>App</th>
+            <th>Users</th>
+            <th>Limit</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for app in apps %}
+            <tr>
+              <td>{{ app.name }}</td>
+              <td><strong>{{ app.active|intcomma }}</strong></td>
+              <td>{{ app.user_max|intcomma }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="secondary-sec">
+      <h4 class="section-header">Global Actions</h4>
+      <ul class="secondary-nav">
+        <li><a class="link" href="{% url dashboard_home %}">My Apps</a></li>
+        <li class="active"><a class="link" href="{% url accounts %}">My Account</a></li>
+        <li><a class="link" href="{% url dashboard_devices %}">Manage Devices</a></li>
+      </ul>
+      {% block callout %}{% endblock %}
+    </div>
+     
+    <div class="clear"></div> 
+     
+  </div>
+</div>
+{% endblock %}

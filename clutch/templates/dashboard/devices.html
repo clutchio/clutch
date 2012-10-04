@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Devices - {{ block.super }}{% endblock %}
+{% block body_class %}secondary dashboard{% endblock %}
+
+{% block content %}  
+  <div class="edge"></div>
+      
+  <div class="section">
+    <div class="content">
+            
+      <div class="title">
+        <h1>Devices</h1>
+      </div>
+            
+      <div class="main-sec">
+        {% if devices %}
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Identifier</th>
+                {% comment %}<th>Primary</th>{% endcomment %}
+                <th>Date Added</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for device in devices %}
+                <tr>
+                  <td>{{ device.name }}</td>
+                  <td>{{ device.udid }}</td>
+                  {% comment %}<td>{% if device.primary %}yes{% else %}no{% endif %}</td>{% endcomment %}
+                  <td>{{ device.date_created.date }}</td>
+                  <td>
+                    {% comment %}{% if not device.primary %}<a href="#" class="action" data-action="device-make-primary" data-device="{{ device.id }}">Make Primary</a>{% endif %}{% endcomment %}
+                    <a href="#" class="action" data-action="device-delete" data-device="{{ device.id }}">Delete Device</a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <a href="{% url dashboard_create_device %}" class="btn gray right">Add a new device</a>
+        {% else %}
+          <div class="alert-message">
+            <a href="#" class="close">×</a>
+            <p>You have not yet added any devices. To begin development using Clutch, you should</p>
+            <div class="alert-actions">
+              <a href="{% url dashboard_create_device %}" class="btn small">add your first device</a>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="secondary-sec">
+        <h4 class="section-header">
+          Global Actions 
+          <a data-content="Global actions let you manage things that aren't specific to any particular app, like your account settings or your development devices." rel="popover" class="help-pop" href="#" data-original-title="What are global actions?">?</a>
+        </h4>
+        <ul class="secondary-nav">
+          <li><a class="link" href="{% url dashboard_home %}">My Apps</a></li>
+          <li><a class="link" href="{% url accounts %}">My Account</a></li>
+          <li class="active"><a class="link" href="{% url dashboard_devices %}">Manage Devices</a></li>
+          <!--
+          <li><a href="#" rel="tooltip" title="first tooltip">test tooltip</a></li>
+          -->
+        </ul>
+        {% block callout %}{% endblock %}
+      </div>
+   
+      <div class="clear"></div> 
+                      
+    </div>
+  </div>
+{% endblock %}

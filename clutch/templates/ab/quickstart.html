@@ -1,0 +1,150 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}A/B Testing Quick Start - {{ block.super }}{% endblock %}
+{% block body_id %}ab-quickstart{% endblock %}
+{% block body_class %}secondary dashboard{% endblock %}
+
+{% block extra_head %}
+<script charset="utf-8" type="text/javascript">
+$(function() {
+  $('#project-type-selector').click(function(e) {
+    $('div.option.selected').removeClass('selected');
+    $(e.target).closest('div.option').addClass('selected');
+    $('.project-type').hide();
+    $('#project-type-' + $('#project-type-selector :checked').val()).show();
+
+    $('.screencast-getting-started').hide();
+    $('#screencast-getting-started-' + $('#project-type-selector :checked').val() + '-btn').show();
+  });
+});
+</script>
+{% endblock %}
+
+{% block main %}
+  <div class="title">
+    <h1>Quick Start for A/B Testing <i>{{ app.name }}</i></h1>
+  </div>
+
+  <div class="main-sec">
+
+    <div id="project-type-selector">
+      <div class="option selected">
+        <input type="radio" name="project-type" value="ios" id="ios" checked="checked" />
+        <label for="ios" class="ios">I am building for iOS</label>
+        <span></span>
+      </div>
+      <div class="option" style="margin:0">
+        <input type="radio" name="project-type" value="android" id="android" />
+        <label for="android" class="android">I am building for Android</label>
+        <span></span>
+      </div>
+      <div class="clear"></div>
+    </div>
+
+    <div class="project-type" id="project-type-ios">
+      <h3 style="margin:35px 0 14px">1. Download the Clutch A/B Testing Framework for iOS</h3>
+      <p>
+        Download the <a href="http://clutchdownloads.s3.amazonaws.com/latest/clutch-ios.zip">Clutch iOS Library</a>
+        zip file and extract it.
+        <br />
+        <br /> 
+        <strong>Now drag the Clutch.framework folder into your project:</strong>
+        <img src="{{ STATIC_URL }}images/quickstart-drag.jpg" alt="Dragging the Clutch Framework Into Your Project" />
+        <br />
+        <br />
+        <strong>Choose the option to "Copy items into destination group's folder":</strong>
+        <img src="{{ STATIC_URL }}images/quickstart-copy.jpg" alt="Choosing to copy items into destination group's folder" />
+        <br />
+        <br />
+        <strong>Since Clutch relies on sqlite, add that to your linked frameworks as well:</strong>
+        <img src="{{ STATIC_URL }}images/quickstart-sqlite.jpg" alt="Adding sqlite" />
+      </p>
+
+      <h3>2. Set up the A/B Testing Framework in Your App Delegate</h3>
+      <p>
+        In your <string>AppDelegate.h</strong> file, right underneath
+        &ldquo;#import &lt;UIKit/UIKit.h&gt;&rdquo;, import the Clutch A/B testing library:
+        <pre>#import &lt;Clutch/ClutchAB.h&gt;</pre>
+
+        In <strong>didFinishLaunchingWithOptions</strong> add the following lines:
+        <pre>// Set up Clutch A/B testing
+[ClutchAB setupForKey:@"{{ app_key }}" rpcURL:@"http://127.0.0.1:41674/"];</pre>
+      </p>
+
+      <h3>3. Start A/B Testing!</h3>
+      <p>
+        Now you&rsquo;re set up to run A/B tests, and you can start adding
+        as many tests as you want to your app.  Here&rsquo;s an example:
+        <pre>[ClutchAB testWithName:@"loginButtonColor" A:^{
+    self.navigationItem.rightBarButtonItem.tintColor = [UIColor redColor];
+} B:^{
+    self.navigationItem.rightBarButtonItem.tintColor = [UIColor greenColor];
+}];</pre>
+
+        For more information, visit our <a href="http://docs.clutch.io/ab-testing-ios.html">iOS A/B testing docs</a>.
+      </p>
+    </div>
+
+    <div class="project-type" id="project-type-android" style="display: none">
+      <h3 style="margin:35px 0 14px">1. Download the Clutch A/B Testing Framework for Android</h3>
+      <p>
+        Download the <a href="http://clutchdownloads.s3.amazonaws.com/latest/clutch-android.jar">Clutch A/B testing Android library</a> jar file.
+        <br />
+        <br /> 
+        <strong>Now drag the clutch-android.jar file into your project:</strong>
+        <img src="{{ STATIC_URL }}images/quickstart-ab-android-drag.jpg" alt="Dragging the Clutch Into Your Project" />
+        <br />
+        <br />
+        <strong>Choose the option to "Copy files":</strong>
+        <img src="{{ STATIC_URL }}images/quickstart-ab-android-copy.jpg" alt="Choosing to copy files" />
+        <br />
+        <br />
+        <strong>Add the jar to your project&rsquo;s build path</strong>
+        <img src="{{ STATIC_URL }}images/quickstart-ab-android-add-jar.jpg" alt="Adding the jar" />
+      </p>
+
+      <h3>2. Set up the A/B Testing Framework in Your Main Activity</h3>
+      <p>
+        In your main activity, you need to add three bits of code.  The first
+        code to add can be added anywhere in the <strong>onCreate</strong>
+        function (the second parameter is the path to your RPC instance):
+
+        <pre>ClutchAB.setup(this.getApplicationContext(), "{{ app_key }}", "http://127.0.0.1:41674/");</pre>
+
+        The second one is in the <strong>onPause</strong> function, like so:
+
+        <pre>protected void onPause() {
+  super.onPause();
+  ClutchAB.onPause();
+}</pre>
+
+        The final one is in the <strong>onResume</strong> function, like so:
+
+        <pre>protected void onResume() {
+  super.onResume();
+  ClutchAB.onResume();
+}</pre>
+      </p>
+
+      <h3>3. Start A/B Testing!</h3>
+      <p>
+        Now you&rsquo;re set up to run A/B tests, and you can start adding
+        as many tests as you want to your app.  Here&rsquo;s an example:
+        <pre>// Find a login button
+final Button loginButton = (Button)findViewById(R.id.login_button);
+
+ClutchAB.test("loginButtonColor", new ClutchABTest() {
+    public void A() {
+        loginButton.setBackgroundColor(Color.RED);
+    }
+    public void B() {
+        loginButton.setBackgroundColor(Color.GREEN);
+    }
+});</pre>
+
+        For more information, visit our <a href="http://docs.clutch.io/ab-testing-android.html">Android A/B testing docs</a>.
+      </p>
+    </div>
+
+  </div>
+{% endblock %}

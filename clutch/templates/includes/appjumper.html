@@ -1,0 +1,11 @@
+<div class="appselector">
+<h4>Apps:</h4>
+<select id="app-jumper">
+    {% if not app %}
+        <option value="{% url dashboard_home %}">----------</option>
+    {% endif %}
+    {% for jump_app in apps %}
+        <option value="{{ jump_app.get_absolute_url }}" {% if jump_app == app %}selected="selected"{% endif %}>{{ jump_app.name }}</option>
+    {% endfor %}
+</select>
+</div>

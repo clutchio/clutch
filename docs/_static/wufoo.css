@@ -1,0 +1,51 @@
+/* Wufoo bullshit */
+
+.ltr {border:1px solid #ccc;font-family:"helvetica neue",helvetica,arial,sans-serif !important;}
+.wufoo .info h2 {border-bottom: 1px solid #CCCCCC;
+box-shadow: 0 2px 0 -1px #FFFFFF;display: block;font-size: 24px;margin: 0 0 15px;padding: 0 20px 10px 0;color:#B73D06 !important;font-family:"helvetica neue",helvetica,arial,sans-serif !important;line-height:24px;}
+.wufoo textarea.textarea {height:60px;}
+
+.info {padding:0 1% 0 !important;margin:0 !important;}
+
+.wufoo li.focused {background-color:transparent !important;}
+#errorLi {display:none !important;}
+form li.error {background-color:transparent !important;}
+.wufoo li {width:96% !important;}
+form p.error {font-size:10px !important;}
+
+.wufoo .info div a {color:#B73D06 !important;}
+.wufoo .info div a:hover {color:#e06321 !important;}
+
+.wufoo input.btTxt {background-color: #ddd;
+    background-image: -moz-linear-gradient(top , #ddd, #eee);
+    background-image: -webkit-linear-gradient(top , #ddd, #eee);
+    background-repeat: repeat-x;
+    border-color:#ccc #ccc #c0c5c2;
+    text-shadow: 0 1px 1px #fff;
+    color:#b73d06;
+    text-decoration:none;
+    border-radius: 60px;
+    border-width:1px;
+    border-style:solid;
+    box-shadow:0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+    font-size:12px !important;
+    padding:4px 10px;
+    font-weight:bold;
+    display:inline-block;
+    float:right;
+    margin:0 -3px 0 0;
+    font-family:"helvetica neue",helvetica,arial,sans-serif !important;
+    }
+    
+.wufoo input.btTxt:hover{
+    color:#e06321;
+    background-image: -moz-linear-gradient(top , #ddd, #fff);
+    background-image: -webkit-linear-gradient(top , #ddd, #fff);
+    cursor:pointer;
+    }
+
+    .wufoo input.text, .wufoo textarea.textarea, .wufoo input.file {
+        border-radius:6px;
+        font-family: inherit;
+        padding: 5px;
+    }

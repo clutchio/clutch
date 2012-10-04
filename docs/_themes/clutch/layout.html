@@ -1,0 +1,251 @@
+{#
+    basic/layout.html
+    ~~~~~~~~~~~~~~~~~
+
+    Master layout template for Sphinx themes.
+
+    :copyright: Copyright 2007-2011 by the Sphinx team, see AUTHORS.
+    :license: BSD, see LICENSE for details.
+#}
+{%- block doctype -%}
+<!DOCTYPE html>
+{%- endblock %}
+{%- set reldelim1 = reldelim1 is not defined and ' &raquo;' or reldelim1 %}
+{%- set reldelim2 = reldelim2 is not defined and ' |' or reldelim2 %}
+{%- set render_sidebar = (not embedded) and (not theme_nosidebar|tobool) and
+                         (sidebars != []) %}
+{%- set url_root = pathto('', 1) %}
+{# XXX necessary? #}
+{%- if url_root == '#' %}{% set url_root = '' %}{% endif %}
+{%- if not embedded and docstitle %}
+  {%- set titlesuffix = " &mdash; "|safe + docstitle|e %}
+{%- else %}
+  {%- set titlesuffix = "" %}
+{%- endif %}
+{%- set clutchurl = 'https://clutch.io' %}
+
+{%- macro relbar() %}
+    <div class="breadcrumbs">
+    {%- block rootrellink %}
+    <a href="{{ pathto(master_doc) }}" class="main-link">{{ shorttitle|e }}</a>{{ reldelim1 }}
+    {%- endblock %}
+    {%- for parent in parents %}
+      <a href="{{ parent.link|e }}" {% if loop.last %}{{ accesskey("U") }}{% endif %}>{{ parent.title }}</a>{{ reldelim1 }}
+    {%- endfor %}
+    {{ title }}
+    </div>
+    <div class="rellinks">
+    <a href="{{ pathto(master_doc) }}" class="left">home</a>    
+    {%- for rellink in rellinks %}
+    <a href="{{ pathto(rellink[0]) }}" class="right" title="{{ rellink[1]|striptags|e }}" {{ accesskey(rellink[2]) }}>{{ rellink[3] }}</a>
+    {%- endfor %}
+    </div>
+    {%- block relbaritems %} {% endblock %}
+    <div class="clear"></div>
+{%- endmacro %}
+
+{%- macro sidebar() %}
+      {%- if render_sidebar %}
+      <div class="sphinxsidebar secondary-sec">
+        <div class="sphinxsidebarwrapper">
+          {%- block sidebarlogo %}
+          {%- if logo %}
+            <p class="logo"><a href="{{ pathto(master_doc) }}">
+              <img class="logo" src="{{ pathto('_static/' + logo, 1) }}" alt="Logo"/>
+            </a></p>
+          {%- endif %}
+          {%- endblock %}
+          {%- if sidebars != None %}
+            {#- new style sidebar: explicitly include/exclude templates #}
+            {%- for sidebartemplate in sidebars %}
+            {%- include sidebartemplate %}
+            {%- endfor %}
+          {%- else %}
+            {#- old style sidebars: using blocks -- should be deprecated #}
+            {%- block sidebartoc %}
+            {%- include "localtoc.html" %}
+            {%- endblock %}
+            {%- block sidebarrel %}
+            {%- include "relations.html" %}
+            {%- endblock %}
+            {%- block sidebarsourcelink %}
+            {%- include "sourcelink.html" %}
+            {%- endblock %}
+            {%- if customsidebar %}
+            {%- include customsidebar %}
+            {%- endif %}
+            {%- block sidebarsearch %}
+            {%- include "searchbox.html" %}
+            {%- endblock %}
+          {%- endif %}
+        </div>
+      </div>
+      {%- endif %}
+{%- endmacro %}
+
+{%- macro script() %}
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '{{ url_root }}',
+        VERSION:     '{{ release|e }}',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '{{ '' if no_search_suffix else file_suffix }}',
+        HAS_SOURCE:  {{ has_source|lower }}
+      };
+    </script>
+    {% set script_files = script_files + ["_static/main.js"] %}
+    {%- for scriptfile in script_files %}
+    <script type="text/javascript" src="{{ pathto(scriptfile, 1) }}"></script>
+    {%- endfor %}
+    <script type="text/javascript" src="_static/bootstrap-modal.js"></script>
+{%- endmacro %}
+
+{%- macro css() %}
+    <link rel="stylesheet" href="{{ pathto('_static/' + style, 1) }}" type="text/css" />
+    <link rel="stylesheet" href="{{ pathto('_static/pygments.css', 1) }}" type="text/css" />
+    {%- for cssfile in css_files %}
+    <link rel="stylesheet" href="{{ pathto(cssfile, 1) }}" type="text/css" />
+    {%- endfor %}
+{%- endmacro %}
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://ogp.me/ns#">
+      <head>
+          <meta http-equiv="Content-Type" content="text/html; charset={{ encoding }}" />
+          {{ metatags }}
+          {%- block htmltitle %}
+          <title>Clutch.io - {{ title|striptags|e }} - Documentation</title>
+          {%- endblock %}
+          {{ css() }}
+          {%- if not embedded %}
+          {{ script() }}
+          {%- if use_opensearch %}
+          <link rel="search" type="application/opensearchdescription+xml"
+                title="{% trans docstitle=docstitle|e %}Search within {{ docstitle }}{% endtrans %}"
+                href="{{ pathto('_static/opensearch.xml', 1) }}"/>
+          {%- endif %}
+          {%- if favicon %}
+          <link rel="shortcut icon" href="{{ pathto('_static/' + favicon, 1) }}"/>
+          {%- endif %}
+          {%- endif %}
+          
+              {%- block linktags %}
+                  {%- if hasdoc('about') %}
+                  <link rel="author" title="{{ _('About these documents') }}" href="{{ pathto('about') }}" />
+                  {%- endif %}
+                  {%- if hasdoc('genindex') %}
+                  <link rel="index" title="{{ _('Index') }}" href="{{ pathto('genindex') }}" />
+                  {%- endif %}
+                  {%- if hasdoc('search') %}
+                  <link rel="search" title="{{ _('Search') }}" href="{{ pathto('search') }}" />
+                  {%- endif %}
+                  {%- if hasdoc('copyright') %}
+                  <link rel="copyright" title="{{ _('Copyright') }}" href="{{ pathto('copyright') }}" />
+                  {%- endif %}
+                  <link rel="top" title="{{ docstitle|e }}" href="{{ pathto('index') }}" />
+                  {%- if parents %}
+                  <link rel="up" title="{{ parents[-1].title|striptags|e }}" href="{{ parents[-1].link|e }}" />
+                  {%- endif %}
+                  {%- if next %}
+                  <link rel="next" title="{{ next.title|striptags|e }}" href="{{ next.link|e }}" />
+                  {%- endif %}
+                  {%- if prev %}
+                  <link rel="prev" title="{{ prev.title|striptags|e }}" href="{{ prev.link|e }}" />
+                  {%- endif %}
+              {%- endblock %}
+          
+          {%- block extrahead %} {% endblock %}
+      </head>
+      <body id="docs" class="secondary {% block body_class %}{% endblock %}">
+          <div id="header">
+                <div class="content">
+                    <div class="ribbon"></div>
+                    <h1 class="logo"><a href="{{ clutchurl }}/">Clutch.io</a></h1>
+                        <ul class="main-nav">
+                			<li><a href="{{ clutchurl }}/features/"><strong>Features <em>What We Offer</em></strong></a></li>
+                			<li><a href="{{ clutchurl }}/pricing/"><strong>Pricing <em>Free &amp; Premium</em></strong></a></li>
+                			<li class="active"><a href="http://docs.clutch.io/"><strong>Documentation <em>Clear and Concise</em></strong></a></li>
+                            <li class="last"><a href="{{ clutchurl }}/apps/"><strong>My Account <em>Logout</em></strong></a></li>	
+                		</ul>
+                </div>
+           </div>
+           <div class="edge"></div>
+           
+            {%- block content %}
+            
+              <div class="document">   
+                  
+              {%- block document %}
+                  <div class="documentwrapper section-wrap">
+                      
+                    <div class="relbar">
+                    {{ relbar() }}
+                    </div>  
+                      
+                    <div class="bodywrapper content">  
+                      <div class="body main-sec">
+                        {% block body %} {% endblock %}
+                      </div>
+                        {{ sidebar() }}
+                      <div class="clear"></div>
+                    </div>
+                    
+                  </div>
+              {%- endblock %}
+                </div>
+            {%- endblock %}
+
+      {%- block footer %}
+      <div id="footer">
+             <div class="content">
+                 <div class="left">
+                 		<ul>
+                 		    <li><a href="https://clutch.io/">Home</a></li>
+                 	        <li><a href="{{ clutchurl }}/about/">About</a></li>
+                 	        <li><a href="{{ clutchurl }}/faq/">FAQ</a></li>
+                 	        <li><a href="{{ clutchurl }}/privacy/">Privacy</a></li>
+                 	        <li><a href="{{ clutchurl }}/terms/">Terms</a></li>
+                          <li><a href="http://docs.clutch.io/">Documentation</a></li>
+                 	        <li class="#"><a href="http://blog.clutch.io">Blog</a></li>
+                 	    </ul>	
+                 		<br class="cl">
+
+                 		<a href="https://twitter.com/clutchio" class="twitter-follow-button" data-show-count="false" data-show-screen-name="false">Follow @clutchio</a>
+                        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                 	</div>
+
+                 	<div class="right">	
+                 		<p class="copyright">Copyright &copy; 2011-2012 Boilerplate Inc. San Francisco, CA.
+                 		    <br />
+                 		    {%- if show_sphinx %}
+                              {% trans sphinx_version=sphinx_version|e %}Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> {{ sphinx_version }}.{% endtrans %}
+                            {%- endif %}    
+                 		</p>
+                 	</div>
+             </div>
+        </div>
+    {%- endblock %}
+    
+    {% block extra_body %}
+    {% endblock %}
+    
+    <!-- begin olark code --><script type='text/javascript'>/*{literal}<![CDATA[*/window.olark||(function(i){var e=window,h=document,a=e.location.protocol=="https:"?"https:":"http:",g=i.name,b="load";(function(){e[g]=function(){(c.s=c.s||[]).push(arguments)};var c=e[g]._={},f=i.methods.length; while(f--){(function(j){e[g][j]=function(){e[g]("call",j,arguments)}})(i.methods[f])} c.l=i.loader;c.i=arguments.callee;c.f=setTimeout(function(){if(c.f){(new Image).src=a+"//"+c.l.replace(".js",".png")+"&"+escape(e.location.href)}c.f=null},20000);c.p={0:+new Date};c.P=function(j){c.p[j]=new Date-c.p[0]};function d(){c.P(b);e[g](b)}e.addEventListener?e.addEventListener(b,d,false):e.attachEvent("on"+b,d); (function(){function l(j){j="head";return["<",j,"></",j,"><",z,' onl'+'oad="var d=',B,";d.getElementsByTagName('head')[0].",y,"(d.",A,"('script')).",u,"='",a,"//",c.l,"'",'"',"></",z,">"].join("")}var z="body",s=h[z];if(!s){return setTimeout(arguments.callee,100)}c.P(1);var y="appendChild",A="createElement",u="src",r=h[A]("div"),G=r[y](h[A](g)),D=h[A]("iframe"),B="document",C="domain",q;r.style.display="none";s.insertBefore(r,s.firstChild).id=g;D.frameBorder="0";D.id=g+"-loader";if(/MSIE[ ]+6/.test(navigator.userAgent)){D.src="javascript:false"} D.allowTransparency="true";G[y](D);try{D.contentWindow[B].open()}catch(F){i[C]=h[C];q="javascript:var d="+B+".open();d.domain='"+h.domain+"';";D[u]=q+"void(0);"}try{var H=D.contentWindow[B];H.write(l());H.close()}catch(E){D[u]=q+'d.write("'+l().replace(/"/g,String.fromCharCode(92)+'"')+'");d.close();'}c.P(2)})()})()})({loader:(function(a){return "static.olark.com/jsclient/loader0.js?ts="+(a?a[1]:(+new Date))})(document.cookie.match(/olarkld=([0-9]+)/)),name:"olark",methods:["configure","extend","declare","identify"]});
+    /* custom configuration goes here (www.olark.com/documentation) */
+    olark.configure('system.domain', '.clutch.io');
+    olark.identify('8940-141-10-1241');/*]]>{/literal}*/</script>
+        
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-29049023-2']);
+      _gaq.push(['_setDomainName', 'clutch.io']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+</body>
+</html>

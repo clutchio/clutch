@@ -1,0 +1,27 @@
+{% extends "marketing-base.html" %}
+
+{% block title %}Logged Out - {{ block.super }}{% endblock %}
+{% block body_id %}logout{% endblock %}
+{% block body_class %}secondary full{% endblock %}
+
+{% block content %}    
+    <div class="edge"></div>
+    <div class="section">   
+        <div class="content">
+            <div class="title">
+               <h1>Logout</h1>
+            </div>   
+            <div class="main-sec">    
+                <div class="alert-message blue">
+                   <p style="font-size:18px"><strong>Heads up!</strong> You have been successfully logged out, thanks for using Clutch!</p>
+                   <div class="alert-actions">
+                     <a href="/login/" class="btn gray small">Log back in</a>
+                    </div> 
+                </div>
+            </div>
+            
+            
+            <div class="clear"></div> 
+        </div>
+    </div>
+{% endblock %}

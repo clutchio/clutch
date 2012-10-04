@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Create a New App - {{ block.super }}{% endblock %}
+{% block body_id %}dashboard-create-app{% endblock %}
+{% block body_class %}secondary full{% endblock %}
+
+{% block content %}
+  <div class="edge"></div>
+    <div class="section">   
+      <div class="content">
+
+        <div class="title">
+          <h1>Create App</h1>                   
+        </div>    
+                
+        <div class="main-sec">
+                                          
+          <div class="form-box">                  
+            <form method="POST">
+              {% csrf_token %}
+              <ul>
+                {{ form.as_ul }}
+              </ul>
+              <input type="submit" class="btn" value="Create App" />
+            </form>
+          </div>
+                    
+          <div class="help-box">
+            <h3>Creating an app</h3>
+            <p>Before you can really get going with Clutch&rsquo;s developer tools, you have to first create an app, which should roughly correspond to an iOS project in XCode.</p>
+            <a href="http://docs.clutch.io/gettingstarted.html" target="_blank" class="btn gray">Need more help? View the Docs.</a>   
+          </div>    
+                                       
+        </div>
+                
+        <div class="clear"></div> 
+                        
+      </div>
+    </div>
+  </div>
+{% endblock %}

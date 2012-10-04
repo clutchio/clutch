@@ -1,0 +1,90 @@
+{% extends "admin/base_site.html" %}
+{% load i18n humanize %}
+
+{% block extrahead %}
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+function drawChart(name, rows, eltId) {
+    var data = new google.visualization.DataTable();
+    data.addColumn('date', 'Date');
+    data.addColumn('number', name);
+    data.addRows(rows.length);
+    for(var i = 0; i < rows.length; ++i) {
+        data.setValue(i, 0, new Date((rows[i][0] + 86400.0) * 1000.0));
+        data.setValue(i, 1, rows[i][1]);
+    }
+    var chart = new google.visualization.AreaChart(document.getElementById(eltId));
+    chart.draw(data, {width: 1000, height: 240,
+        hAxis: {showTextEvery: 4, slantedText: false},
+        legend: 'none'
+    });
+}
+function sumRows(rows) {
+    var r = [];
+    for(var i = 0; i < rows.length; ++i) {
+        r[i] = rows[i];
+        if(i === 0) {
+            continue;
+        }
+        r[i][1] += r[i-1][1];
+    }
+    return r;
+}
+function drawCharts() {
+    var rows = [{% for row in users %}{% if not forloop.first %},{% endif %}[{{ row.0 }}, {{ row.1 }}]{% endfor %}];
+    drawChart('New Users', rows, 'new-users');
+    drawChart('Total Users', sumRows(rows), 'total-users');
+    rows = [{% for row in apps %}{% if not forloop.first %},{% endif %}[{{ row.0 }}, {{ row.1 }}]{% endfor %}];
+    drawChart('New Apps', rows, 'new-apps');
+    drawChart('Total Apps', sumRows(rows), 'total-apps');
+    rows = [{% for row in ab_signups %}{% if not forloop.first %},{% endif %}[{{ row.0 }}, {{ row.1 }}]{% endfor %}];
+    drawChart('New A/B Signups', rows, 'new-ab-signups');
+    drawChart('Total A/B Signups', sumRows(rows), 'total-ab-signups');
+
+}
+google.load('visualization', '1', {packages:['corechart']});
+google.setOnLoadCallback(drawCharts);
+</script>
+{% endblock %}
+
+{% block breadcrumbs %}<div class="breadcrumbs"><a href="/admin/">{% trans 'Home' %}</a>{% if title %} &rsaquo; {{ title }}{% endif %}</div>{% endblock %}
+
+{% block content %}
+
+    <h2>New Users</h2>
+    <div id="new-users"></div>
+
+    <h2>Total Users</h2>
+    <div id="total-users"></div>
+
+    <h2>New Apps</h2>
+    <div id="new-apps"></div>
+
+    <h2>Total Apps</h2>
+    <div id="total-apps"></div>
+
+    <h2>New A/B Signups</h2>
+    <div id="new-ab-signups"></div>
+
+    <h2>Total A/B Signups</h2>
+    <div id="total-ab-signups"></div>
+
+    <h2>Top Apps</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>App</th>
+                <th>Recent Views</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for app in top_apps %}
+                <tr>
+                    <td><a href="/admin/dashboard/app/{{ app.id }}/">{{ app.name }}</a></td>
+                    <td>{{ app.views|intcomma }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

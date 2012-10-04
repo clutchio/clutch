@@ -1,0 +1,30 @@
+{% extends "marketing-base.html" %}
+
+{% block title %}Sign Up - {{ block.super }}{% endblock %}
+{% block body_id %}register{% endblock %}
+{% block body_class %}secondary full{% endblock %}
+
+{% block content %}
+<div class="edge"></div>
+    <div class="section">   
+        <div class="content">
+            <div class="title">
+               <h1>Sign Up</h1>
+            </div>   
+            <div class="main-sec">    
+                <div class="form-box">
+                <form method="POST" id="registration-form">
+                    {% csrf_token %}
+                    <ul>
+                        {{ registration_form.as_ul }}
+                    </ul>
+                    <br />
+
+                    <input type="submit" class="btn green" value="Create My Account!" style="margin:10px 0 0 205px" />
+                </form>
+                </div>
+            </div>
+            <div class="clear"></div> 
+        </div>
+    </div>
+{% endblock %}

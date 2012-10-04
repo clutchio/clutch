@@ -1,0 +1,27 @@
+{% extends "frame.html" %}
+
+{% block container %}        
+    <div id="header">
+      <div class="content">
+          <div class="ribbon"></div>
+          <h1 class="logo"><a href="/">Clutch.io</a></h1>
+          
+          <div class="follow-box"><a href="https://twitter.com/clutchio" class="twitter-follow-button" data-show-count="false" data-show-screen-name="false">Follow @clutchio</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></div>
+
+            <ul class="main-nav dropdown">{% spaceless %}
+                {% url register as register_url %}
+                {% url login as login_url %}{% endspaceless %}
+            <li class="{% if request.path == register_url %}active{% endif %}"><a href="{{ register_url }}"><strong>Register <em>Fast &amp; Easy</em></strong></a></li>
+            {% if user.is_authenticated %}
+                <li class="last"><a href="{% url accounts %}"><strong>My Account <em>Logout</em></strong></a></li>  
+                {% else %}
+            <li class="{% if request.path == login_url %}active{% endif %} last"><a href="/login/"><strong>Login <em>Login or Register</em></strong></a></li>
+                {% endif %}
+          </ul>
+          
+      </div>
+    </div>
+    {% block content %}{% endblock %} 
+              
+{% endblock %}

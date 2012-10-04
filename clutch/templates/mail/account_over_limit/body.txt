@@ -1,0 +1,16 @@
+{% autoescape off %}Hello {{ user.username }},
+
+First of all, congratulations!  Your app is doing really well.
+
+What this means for your Clutch account, however, is that you're past the
+number of monthly active users allowed for your plan, and you'll need to
+upgrade.
+
+Don't panic, your users are still getting the latest version of your code, but
+you won't be able to push any new updates or fixes to your users until you
+upgrade.
+
+Here's the link to upgrade: https://clutch.io/accounts/#plans
+
+Cheers,
+The Clutch.io Team{% endautoescape %}

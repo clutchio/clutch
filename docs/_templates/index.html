@@ -1,0 +1,100 @@
+{% extends "layout.html" %}
+{% set title = 'Overview' %}
+
+{% block body_class %}doc-home{% endblock %}
+
+
+{% block body %}
+<div class="title">
+<h1>Clutch Documentation</h1>
+<div class="search-box">
+<form class="search" action="search.html" method="get">
+  <input type="text" name="q" placeholder="search">
+  <input type="submit" value="Go" class="btn gray small">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+</div>
+</div>
+
+
+
+
+
+<div class="row">
+    <div class="abtesting first">
+      <h3><a href="{{ pathto('ab-testing') }}">Clutch A/B Testing Docs</a></h3>
+
+      <a class="ab-testing-btn" href="{{ pathto('ab-testing') }}">Clutch A/B Testing</a>
+
+      <p>A/B testing is pure-native way of running experiments on your native iOS and Android apps.  Inside you can learn more about how to set up and run these tests.</p>
+      
+    </div>
+    <div class="framework second">
+      <h3><a href="{{ pathto('framework') }}">Clutch Framework Docs</a></h3>
+
+      <a class="framework-btn" href="{{ pathto('framework') }}">Clutch Framework</a>
+
+      <p>The Clutch framework helps you write hybrid iOS apps built using native and HTML code.  The framework provides Objective-C layer, the JavaScript layer, and a layer that binds it all together.  Inside you can learn about how to use this framework in your own apps.</p>
+      
+    </div>
+    <div class="clear"></div>
+</div>
+
+
+<div class="clear"></div>
+
+
+
+
+
+
+
+  
+  
+
+
+    
+
+    
+    
+    
+
+  
+  <script type="text/html" id="screencast-getting-started-new-content">
+    <iframe src="https://player.vimeo.com/video/36469397?title=0&amp;byline=0&amp;portrait=0" width="710" height="400" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+  </script>
+  <div class="modal fade my-modal" id="screencast-getting-started-new" style="display: none">    
+  </div>
+  <script type="text/html" id="screencast-getting-started-existing-content">
+    <iframe src="https://player.vimeo.com/video/36468715?title=0&amp;byline=0&amp;portrait=0" width="710" height="400" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+  </script>
+  <div class="modal fade my-modal" id="screencast-getting-started-existing" style="display: none">
+  </div>
+
+{% endblock %}
+
+{% block extra_body %}
+<script charset="utf-8" type="text/javascript">
+$(function() {
+  $('.screencast-getting-started').click(function(e) {
+    var eltId = $(this).attr('href');
+    var elt = $(eltId);
+    elt.on('show', function() {
+      elt.html($(eltId + '-content').html());
+    }).on('hidden', function() {
+      elt.html('');
+    }).modal({
+      backdrop: true,
+      keyboard: true
+    }).css({
+      width: 'auto',
+      'margin-left': function () {
+          return -($(this).width() / 2);
+      }
+    });
+    return false;
+  });
+});
+</script>
+{% endblock %}

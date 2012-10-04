@@ -1,0 +1,33 @@
+{% extends "marketing-base.html" %}
+
+{% block title %}{{ block.super }} - Login{% endblock %}
+{% block body_id %}login{% endblock %}
+{% block body_class %}secondary full{% endblock %}
+
+{% block content %}
+<div class="edge"></div>
+    <div class="section">   
+        <div class="content">
+            <div class="title">
+               <h1>Login</h1>
+            </div>   
+            <div class="main-sec">    
+                <div class="form-box">
+                <form method="POST" id="login-form">
+                    {% csrf_token %}
+                    <ul>
+                        {{ login_form.as_ul }}
+                    </ul>
+                    <input type="submit" class="btn" value="Login" />
+                </form>
+                </div>
+                <div class="help-box">
+                   <h3>Not registered yet?</h3>
+                   <p>Registering is free and requires no credit card information.  One registered you&rsquo;ll be given access to a a vareity of free tools to help you develop quicker.</p>
+                   <a href="{% url register %}" class="btn gray">Sign up for Clutch</a>
+                </div>    
+            </div>
+            <div class="clear"></div> 
+        </div>
+    </div>
+{% endblock %}

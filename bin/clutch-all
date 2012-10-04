@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+if [ $# -lt 1 ]
+then
+    echo "Please provide a path to a clutch configuration file"
+    exit 65
+fi
+if [ ! -f "$1" ]
+then
+   echo "Configuration file $1 does not exist."
+   exit 66
+fi
+
+DJANGO_SETTINGS_MODULE="clutch.settings" django-admin.py syncdb -v 0
+
+# Start the dashbaord
+clutch-web "$@" &
+
+# Start the RPC server
+clutch-rpc "$@" &
+
+# Start the tunnel
+clutch-tunnel "$@" &
+
+wait

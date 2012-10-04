@@ -1,0 +1,38 @@
+{% extends "frame.html" %}
+
+{% block container %}        
+    <div id="header">
+      <div class="content">
+          <div class="ribbon"></div>
+          <h1 class="logo"><a href="/">Clutch.io</a></h1>
+
+            <ul class="main-nav in-app dropdown">{% spaceless %}
+                {% url faq as faq_url %}
+                {% url about as about_url %}{% endspaceless %}
+            <li class="{% if request.path == features_url %}active{% endif %}">
+              <a href="{% url dashboard_home %}"><strong>My Apps <em>Manage your apps</em></strong></a>
+              
+              {% if apps %}
+              <ul class="sub-menu">
+                {% for app in apps %}
+                 <li>
+                  <a href="{{ app.get_absolute_url }}">{{ app.name }}</a>
+                  <span></span>
+                </li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+
+            </li>
+            {% if user.is_authenticated %}
+                <li class="last"><a href="{% url accounts %}"><strong>My Account</strong></a><a href="/logout/" class="logout-link"><em>Logout</em></a></li>  
+                {% else %}
+            <li class="last"><a href="{% url login %}"><strong>Login <em>Login or Register</em></strong></a></li>
+                {% endif %}
+          </ul>
+          
+      </div>
+    </div>
+    {% block content %}{% endblock %} 
+              
+{% endblock %}   

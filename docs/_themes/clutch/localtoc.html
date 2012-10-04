@@ -1,0 +1,15 @@
+{#
+    basic/localtoc.html
+    ~~~~~~~~~~~~~~~~~~~
+
+    Sphinx sidebar template: local table of contents.
+
+    :copyright: Copyright 2007-2011 by the Sphinx team, see AUTHORS.
+    :license: BSD, see LICENSE for details.
+#}
+{%- if display_toc %}
+  <h3 class="contents">Contents</h3>
+  <div class="pad">
+  {{ toc }}
+  </div>
+{%- endif %}
