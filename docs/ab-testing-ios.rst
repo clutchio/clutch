@@ -129,4 +129,4 @@ Here's how it might be used with a data-driven test:
 
 
 .. _`do that first`: https://clutch.io/pricing/
-.. _`Clutch library`: http://clutchdownloads.s3.amazonaws.com/latest/clutch-ios.zip
+.. _`Clutch library`: https://github.com/downloads/clutchio/clutchios/Clutch-iOS-Latest.zip
