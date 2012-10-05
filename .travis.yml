@@ -5,4 +5,4 @@ python:
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: python setup.py install
 # command to run tests, e.g. python setup.py test
-script:  clutch-test travis.py
+script:  clutch-test travis.py 
