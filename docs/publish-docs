@@ -16,6 +16,7 @@ git checkout --orphan master
 git rm -rf .
 
 cp -R $CURRENT/_build/html/* .
+touch .nojekyll
 
 git add .
 git commit -a -m "Generate documentation site"
