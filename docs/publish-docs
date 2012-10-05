@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+CURRENT=`pwd`
+
+make clean && make html
+
+cd /tmp
+
+mkdir clutchdocs-working
+cd clutchdocs-working
+
+git clone git@github.com:clutchio/clutchio.github.com.git
+cd clutchio.github.com
+
+git checkout --orphan gh-pages
+git rm -rf .
+
+cp -R $CURRENT/_build/html/* .
+
+git add .
+git commit -a -m "Generate documentation site"
+
+git push origin gh-pages --force

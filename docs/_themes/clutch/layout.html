@@ -22,7 +22,7 @@
 {%- else %}
   {%- set titlesuffix = "" %}
 {%- endif %}
-{%- set clutchurl = 'https://clutch.io' %}
+{%- set clutchurl = 'http://127.0.0.1:8000' %}
 
 {%- macro relbar() %}
     <div class="breadcrumbs">
@@ -199,7 +199,7 @@
              <div class="content">
                  <div class="left">
                  		<ul>
-                 		    <li><a href="https://clutch.io/">Home</a></li>
+                 		    <li><a href="{{ clutchurl }}/">Home</a></li>
                  	        <li><a href="{{ clutchurl }}/about/">About</a></li>
                  	        <li><a href="{{ clutchurl }}/faq/">FAQ</a></li>
                  	        <li><a href="{{ clutchurl }}/privacy/">Privacy</a></li>

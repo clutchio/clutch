@@ -174,4 +174,4 @@ Gets the latest configuration (provided by clutch.plist).
 Gets the latest version of the configuration.
 
 
-.. _`add device page`: https://clutch.io/devices/create/
+.. _`add device page`: http://127.0.0.1:8000/devices/create/
