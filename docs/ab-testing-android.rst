@@ -120,4 +120,4 @@ Example:
 
 
 .. _`do that first`: https://clutch.io/pricing/
-.. _`Clutch library`: http://clutchdownloads.s3.amazonaws.com/latest/clutch-android.jar
+.. _`Clutch library`: https://github.com/downloads/clutchio/clutchandroid/Clutch-Android-Latest.jar
