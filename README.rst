@@ -77,6 +77,8 @@ Finally, open the docs:
 Tests
 =====
 
+.. image:: https://travis-ci.org/clutchio/clutch.png
+
 To run the tests, generate a test configuration file using clutch-config like
 above, but instead of using clutch-all to run it, use clutch-test:
 
