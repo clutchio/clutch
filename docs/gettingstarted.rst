@@ -3,7 +3,7 @@ Getting Started
 
 The first thing to do is to `sign up for an account`_ on your local Clutch.io
 instance.  If you don't have a Clutch.io instance set up yet, follow the steps
-on the `Clutch project README`.
+on the `Clutch project README`_.
 
 Now to get started with Clutch, the first thing you need to do is
 `create an app`_. All that's required to create an app is to choose an app name

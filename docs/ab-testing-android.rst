@@ -2,7 +2,8 @@ Android SDK
 ===========
 
 If you don't have an account on your Clutch.io instance yet, you'll need to
-`do that first`_.  Otherwise, follow the steps below.
+`do that first`_.  If you don't have a Clutch.io instance set up yet, follow
+the steps on the `Clutch project README`_.  Otherwise, follow the steps below.
 
 
 Getting Started
@@ -120,4 +121,5 @@ Example:
 
 
 .. _`do that first`: http://127.0.0.1:8000/register/
+.. _`Clutch project README`: https://github.com/clutchio/clutch/blob/master/README.rst
 .. _`Clutch library`: https://github.com/downloads/clutchio/clutchandroid/Clutch-Android-Latest.jar
