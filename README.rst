@@ -77,7 +77,7 @@ Finally, open the docs:
 Tests
 =====
 
-.. image:: https://travis-ci.org/clutchio/clutch.png
+|TravisBadge|_
 
 To run the tests, generate a test configuration file using clutch-config like
 above, but instead of using clutch-all to run it, use clutch-test:
@@ -87,3 +87,6 @@ above, but instead of using clutch-all to run it, use clutch-test:
 This is one area where this project could use a lot of help.  If you're
 interested in contributing, helping out by improving our test coverage is a
 great place to start!
+
+.. |TravisBadge| image:: https://travis-ci.org/clutchio/clutch.png
+.. _TravisBadge:: https://travis-ci.org/#!/clutchio/clutch
