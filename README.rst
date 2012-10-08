@@ -89,3 +89,14 @@ above, but instead of using clutch-all to run it, use clutch-test:
 This is one area where this project could use a lot of help.  If you're
 interested in contributing, helping out by improving our test coverage is a
 great place to start!
+
+
+More Discussion
+===============
+
+If you have a question, an idea, or just want to join the discussion about
+Clutch, please join us on our mailing list:
+
+`https://groups.google.com/forum/#!forum/clutchio`_
+
+.. _`https://groups.google.com/forum/#!forum/clutchio`: https://groups.google.com/forum/#!forum/clutchio
