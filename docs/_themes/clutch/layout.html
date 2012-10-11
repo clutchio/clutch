@@ -22,7 +22,7 @@
 {%- else %}
   {%- set titlesuffix = "" %}
 {%- endif %}
-{%- set clutchurl = 'http://127.0.0.1:8000' %}
+{%- set clutchurl = '' %}
 
 {%- macro relbar() %}
     <div class="breadcrumbs">
@@ -160,12 +160,6 @@
                 <div class="content">
                     <div class="ribbon"></div>
                     <h1 class="logo"><a href="{{ clutchurl }}/">Clutch.io</a></h1>
-                        <ul class="main-nav">
-                			<li><a href="{{ clutchurl }}/features/"><strong>Features <em>What We Offer</em></strong></a></li>
-                			<li><a href="{{ clutchurl }}/pricing/"><strong>Pricing <em>Free &amp; Premium</em></strong></a></li>
-                			<li class="active"><a href="http://docs.clutch.io/"><strong>Documentation <em>Clear and Concise</em></strong></a></li>
-                            <li class="last"><a href="{{ clutchurl }}/apps/"><strong>My Account <em>Logout</em></strong></a></li>	
-                		</ul>
                 </div>
            </div>
            <div class="edge"></div>
@@ -200,11 +194,6 @@
                  <div class="left">
                  		<ul>
                  		    <li><a href="{{ clutchurl }}/">Home</a></li>
-                 	        <li><a href="{{ clutchurl }}/about/">About</a></li>
-                 	        <li><a href="{{ clutchurl }}/faq/">FAQ</a></li>
-                 	        <li><a href="{{ clutchurl }}/privacy/">Privacy</a></li>
-                 	        <li><a href="{{ clutchurl }}/terms/">Terms</a></li>
-                          <li><a href="http://docs.clutch.io/">Documentation</a></li>
                  	        <li class="#"><a href="http://blog.clutch.io">Blog</a></li>
                  	    </ul>	
                  		<br class="cl">
