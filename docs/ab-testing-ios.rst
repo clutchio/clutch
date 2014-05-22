@@ -27,7 +27,7 @@ Now in your project's ``AppDelegate.m``, under
 
 .. code-block:: obj-c
 
-    [ClutchAB setupForKey:@"YOUR_APPLICATION_KEY" rpcURL:@"YOUR_RPC_URL"];
+    [ClutchAB setupWithKey:@"YOUR_APPLICATION_KEY" rpcURL:@"YOUR_RPC_URL"];
 
 That's it--you're now set up to run tests!
 
