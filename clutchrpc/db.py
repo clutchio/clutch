@@ -423,7 +423,7 @@ def add_bulk_ab_logs(udid, api_version, app_version, bundle_version, app_key,
                 # Now create any un-created variation objects
                 for i in xrange(data['num_choices']):
                     try:
-                        name = 'Test ' + ('ABCDEFGHIJKLMNOPQRSTUVWXYZ'[i],)
+                        name = 'Test ' + ('ABCDEFGHIJKLMNOPQRSTUVWXYZ'[i])
                         db.execute(VARIATION_INSERT_SQL, [
                             experiment['id'],
                             0.5 / data['num_choices'],
