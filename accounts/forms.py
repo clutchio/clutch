@@ -99,6 +99,8 @@ class RegistrationForm(forms.Form):
             raise forms.ValidationError(u'E-mail address is already taken.')
         except User.DoesNotExist:
             pass
+        except User.MultipleObjectsReturned:
+            raise forms.ValidationError(u'E-mail address is already taken.')
         return email
 
     def save(self):
